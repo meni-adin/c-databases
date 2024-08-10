@@ -1,0 +1,58 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "config-debug",
+            "description": "Debug build using safe version of the library",
+            "binaryDir": "${sourceDir}/build/debug",
+            "cacheVariables": {
+                "C_DATABASES_SAFE_MODE": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "config-release",
+            "description": "Release build using non-safe version of the library",
+            "binaryDir": "${sourceDir}/build/release",
+            "cacheVariables": {
+                "C_DATABASES_SAFE_MODE": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-debug",
+            "configurePreset": "config-debug"
+        },
+        {
+            "name": "build-release",
+            "configurePreset": "config-release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "test-common",
+            "hidden": true,
+            "output": { "outputOnFailure": true },
+            "execution": { "noTestsAction": "error" },
+            "environment": {
+                "GTEST_COLOR": "1"
+            }
+        },
+        {
+            "name": "test-debug",
+            "configurePreset": "config-debug",
+            "inherits": ["test-common"]
+        },
+        {
+            "name": "test-release",
+            "configurePreset": "config-release",
+            "inherits": ["test-common"]
+        }
+    ]
+}
