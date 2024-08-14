@@ -1,6 +1,5 @@
 set(TARGET_NAME doubly_linked_list_test)
 
-enable_testing()
 include(GoogleTest)
 
 set(TARGET_SOURCES

@@ -16,11 +16,11 @@ protected:
         EXPECT_EQ(status, expectedStatus);
     }
 
-    void test_DoublyLinkedList_delete(DoublyLinkedList_t *list)
+    void test_DoublyLinkedList_delete(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor=NULL)
     {
         status_t status;
 
-        status = DoublyLinkedList_deleteList(list);
+        status = DoublyLinkedList_deleteList(list, destructor);
         EXPECT_EQ(status, SUCCESS);
     }
 };
@@ -34,6 +34,14 @@ TEST_F(DoublyLinkedListTest, InvalidArguments)
 #endif // C_DATABASES_SAFE_MODE
 
 TEST_F(DoublyLinkedListTest, InitAndDeinit)
+{
+    DoublyLinkedList_t *list;
+
+    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_delete(list);
+}
+
+TEST_F(DoublyLinkedListTest, InsertSingleElement)
 {
     DoublyLinkedList_t *list;
 

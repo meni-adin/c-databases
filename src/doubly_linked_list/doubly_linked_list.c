@@ -5,13 +5,20 @@
 #include "doubly_linked_list.h"
 #include "errors.h"
 
+#warning remove after debug
+#include <stdio.h>
+#define DBG(...) fprintf(stderr, __VA_ARGS__)
+
 typedef struct DoublyLinkedListNode_t_ DoublyLinkedListNode_t;
 
 struct DoublyLinkedListNode_t_
 {
     DoublyLinkedListNode_t *prev;
     DoublyLinkedListNode_t *next;
-    void *data;
+    void                   *data;
+#ifdef C_DATABASES_SAFE_MODE
+    DoublyLinkedList_t     *list;
+#endif // C_DATABASES_SAFE_MODE
 };
 
 struct DoublyLinkedList_t_
@@ -51,10 +58,31 @@ status_t DoublyLinkedList_newList(DoublyLinkedList_t **list)
     return SUCCESS;
 }
 
-status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list)
+status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor)
 {
-    assert(list);
+    DoublyLinkedListNode_t *currentNode, *nextNode;
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list)
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
 
+    if (list->head)
+    {
+        list->head->prev->next = NULL;
+        for (currentNode = list->head, nextNode = currentNode->next; currentNode != NULL; currentNode = nextNode)
+        {
+            nextNode = currentNode->next;
+            destructor ? destructor(currentNode->data) : (void) destructor;
+    #ifdef C_DATABASES_SAFE_MODE
+            *currentNode = (DoublyLinkedListNode_t) {0};
+    #endif // C_DATABASES_SAFE_MODE
+            free(currentNode);
+        }
+    }
+
+#ifdef C_DATABASES_SAFE_MODE
+    *list = (DoublyLinkedList_t) {0};
+#endif // C_DATABASES_SAFE_MODE
     free(list);
 
     return SUCCESS;
@@ -62,10 +90,10 @@ status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list)
 
 status_t DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinkedListNode_t *reference, DoublyLinkedListDirection_t direction, void *data)
 {
-#ifdef C_DATABASES_SAFE
+#ifdef C_DATABASES_SAFE_MODE
     if (!list || !DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction))
         return ERR_BAD_ARGUMENT;
-#endif // C_DATABASES_SAFE
+#endif // C_DATABASES_SAFE_MODE
 
     DoublyLinkedListNode_t *newNode = malloc(sizeof(*newNode));
 
@@ -73,6 +101,9 @@ status_t DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinke
         return ERR_MEM_ALLOC;
 
     newNode->data = data;
+#ifdef C_DATABASES_SAFE_MODE
+    newNode->list = list;
+#endif // C_DATABASES_SAFE_MODE
 
     if (!list->head)
     {
@@ -105,5 +136,20 @@ status_t DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinke
 
 status_t DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListNode_t *node)
 {
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node || (node->list != list))
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    if (list->head == node)
+        list->head = node->next;
+
+    node->next = node->prev;
+    node->prev = node->next;
+#ifdef C_DATABASES_SAFE_MODE
+    *node = (DoublyLinkedListNode_t) {0};
+#endif // C_DATABASES_SAFE_MODE
+    free(node);
+
     return SUCCESS;
 }

@@ -1,7 +1,7 @@
-set(TARGET_NAME doubly_linked_list)
+set(TARGET_NAME test_utils)
 
 set(TARGET_SOURCES
-    "doubly_linked_list.c"
+    "test_utils.cpp"
 )
 
 add_library(${TARGET_NAME} STATIC
@@ -10,8 +10,4 @@ add_library(${TARGET_NAME} STATIC
 
 target_include_directories(${TARGET_NAME}
     PUBLIC "include"
-)
-
-target_link_libraries(${TARGET_NAME}
-    errors
 )
