@@ -24,9 +24,19 @@ status_t DoublyLinkedList_newList(DoublyLinkedList_t **list);
 
 status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor);
 
-status_t DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinkedListNode_t *reference, DoublyLinkedListDirection_t, void *data);
+status_t DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinkedListNode_t *reference, DoublyLinkedListDirection_t direction, void *data);
 
 status_t DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListNode_t *node);
+
+status_t DoublyLinkedList_getHead(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node);
+
+status_t DoublyLinkedList_getTail(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node);
+
+status_t DoublyLinkedList_getNext(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node);
+
+status_t DoublyLinkedList_getPrev(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node);
+
+status_t DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **data);
 
 #ifdef __cplusplus
 }

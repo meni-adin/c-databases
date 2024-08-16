@@ -1,8 +1,9 @@
 # build directory
-build
+build/*
 
 # mac-os system files
-.DS_Store/
+.DS_Store/*
 
 # VS code settings directory
-.vscode/
+.vscode/*
+!.vscode/launch.json

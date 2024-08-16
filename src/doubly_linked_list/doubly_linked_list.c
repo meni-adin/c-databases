@@ -5,10 +5,6 @@
 #include "doubly_linked_list.h"
 #include "errors.h"
 
-#warning remove after debug
-#include <stdio.h>
-#define DBG(...) fprintf(stderr, __VA_ARGS__)
-
 typedef struct DoublyLinkedListNode_t_ DoublyLinkedListNode_t;
 
 struct DoublyLinkedListNode_t_
@@ -150,6 +146,66 @@ status_t DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListN
     *node = (DoublyLinkedListNode_t) {0};
 #endif // C_DATABASES_SAFE_MODE
     free(node);
+
+    return SUCCESS;
+}
+
+status_t DoublyLinkedList_getHead(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node)
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    *node = list->head;
+
+    return SUCCESS;
+}
+
+status_t DoublyLinkedList_getTail(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node)
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    *node = list->head ? list->head->prev : NULL;
+
+    return SUCCESS;
+}
+
+status_t DoublyLinkedList_getNext(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node || ((*node)->list != list))
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    *node = ((*node)->next != list->head) ? (*node)->next : NULL;
+
+    return SUCCESS;
+}
+
+status_t DoublyLinkedList_getPrev(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node || ((*node)->list != list))
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    *node = (*node != list->head) ? (*node)->prev : NULL;
+
+    return SUCCESS;
+}
+
+status_t DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **data)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!node || !data)
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    *data = node->data;
 
     return SUCCESS;
 }
