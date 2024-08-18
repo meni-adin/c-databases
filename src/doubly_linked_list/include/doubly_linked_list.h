@@ -20,6 +20,8 @@ typedef struct DoublyLinkedListNode_t_ DoublyLinkedListNode_t;
 
 typedef void (* DoublyLinkedListDataDestructor_t)(void *data);
 
+typedef int (* DoublyLinkedListDataComparator_t)(const void *data1, const void *data2);
+
 status_t DoublyLinkedList_newList(DoublyLinkedList_t **list);
 
 status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor);
@@ -37,6 +39,8 @@ status_t DoublyLinkedList_getNext(const DoublyLinkedList_t *list, DoublyLinkedLi
 status_t DoublyLinkedList_getPrev(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node);
 
 status_t DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **data);
+
+status_t DoublyLinkedList_findData(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node, DoublyLinkedListDirection_t direction, DoublyLinkedListDataComparator_t comparator, const void *data);
 
 #ifdef __cplusplus
 }

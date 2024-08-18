@@ -209,3 +209,57 @@ status_t DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **dat
 
     return SUCCESS;
 }
+
+status_t DoublyLinkedList_findData(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node, DoublyLinkedListDirection_t direction, DoublyLinkedListDataComparator_t comparator, const void *data)
+{
+#ifdef C_DATABASES_SAFE_MODE
+    if (!list || !node || (*node && list != (*node)->list) || !DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction) || !comparator)
+        return ERR_BAD_ARGUMENT;
+#endif // C_DATABASES_SAFE_MODE
+
+    DoublyLinkedListNode_t *current, *last;
+
+    if (!list->head)
+    {
+        *node = NULL;
+        return SUCCESS;
+    }
+
+    if (direction == DOUBLY_LINKED_LIST_DIRECTION_TAIL)
+        current = last = list->head;
+    else
+        current = last = list->head->prev;
+
+    if (*node)
+    {
+        if (direction == DOUBLY_LINKED_LIST_DIRECTION_TAIL)
+            if (*node == list->head->prev)
+            {
+                *node = NULL;
+                return SUCCESS;
+            }
+            else
+                current = (*node)->next;
+        else
+            if (*node == list->head)
+            {
+                *node = NULL;
+                return SUCCESS;
+            }
+            else
+                current = (*node)->prev;
+    }
+
+    do
+    {
+        if (comparator(data, current->data) == 0)
+        {
+            *node = current;
+            return SUCCESS;
+        }
+        current = (direction == DOUBLY_LINKED_LIST_DIRECTION_TAIL) ? current->next : current->prev;
+    } while (current != last);
+
+    *node = NULL;
+    return SUCCESS;
+}

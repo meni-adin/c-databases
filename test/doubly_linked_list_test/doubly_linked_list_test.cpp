@@ -21,7 +21,7 @@ protected:
     {
     }
 
-    void test_DoublyLinkedList_new(DoublyLinkedList_t **list, status_t expectedStatus=SUCCESS)
+    void test_DoublyLinkedList_newList(DoublyLinkedList_t **list, status_t expectedStatus=SUCCESS)
     {
         status_t status;
 
@@ -29,12 +29,12 @@ protected:
         EXPECT_EQ(status, expectedStatus);
     }
 
-    void test_DoublyLinkedList_delete(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor=NULL)
+    void test_DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor=NULL, status_t expectedStatus=SUCCESS)
     {
         status_t status;
 
         status = DoublyLinkedList_deleteList(list, destructor);
-        EXPECT_EQ(status, SUCCESS);
+        EXPECT_EQ(status, expectedStatus);
     }
 
     void test_DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinkedListNode_t *reference, DoublyLinkedListDirection_t direction, void *data)
@@ -123,18 +123,18 @@ protected:
 #ifdef C_DATABASES_SAFE_MODE
 TEST_F(DoublyLinkedListTest, InvalidArguments)
 {
-    test_DoublyLinkedList_new(NULL, ERR_BAD_ARGUMENT);
+    test_DoublyLinkedList_newList(NULL, ERR_BAD_ARGUMENT);
 }
 #endif // C_DATABASES_SAFE_MODE
 
-TEST_F(DoublyLinkedListTest, InitAndDeinit)
+TEST_F(DoublyLinkedListTest, NewAndDelete)
 {
     DoublyLinkedList_t *list;
     auto &elements = testUtils->vecEmpty;
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertSingleElementAtHead)
@@ -142,11 +142,11 @@ TEST_F(DoublyLinkedListTest, InsertSingleElementAtHead)
     DoublyLinkedList_t *list;
     auto &elements = testUtils->vecSingle;
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     for (const auto iter : elements)
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)iter);
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertSingleElementAtTail)
@@ -154,11 +154,11 @@ TEST_F(DoublyLinkedListTest, InsertSingleElementAtTail)
     DoublyLinkedList_t *list;
     auto &elements = testUtils->vecSingle;
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     for (const auto iter : elements)
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)iter);
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead)
@@ -166,11 +166,11 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead)
     DoublyLinkedList_t *list;
     auto &elements = testUtils->vecZeroToNine;
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter)
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)*iter);
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtTail)
@@ -178,11 +178,11 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtTail)
     DoublyLinkedList_t *list;
     auto &elements = testUtils->vecZeroToNine;
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     for (const auto iter : elements)
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)iter);
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference)
@@ -192,7 +192,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference)
     auto &elements = testUtils->vecZeroToNine;
     auto iter = elements.crbegin();
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)*iter);
     test_DoublyLinkedList_getHead(list, &node);
     for (++iter; iter != elements.crend(); ++iter){
@@ -200,7 +200,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference)
         test_DoublyLinkedList_getPrev(list, &node);
     }
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference)
@@ -210,7 +210,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference)
     auto &elements = testUtils->vecZeroToNine;
     auto iter = elements.cbegin();
 
-    test_DoublyLinkedList_new(&list);
+    test_DoublyLinkedList_newList(&list);
     test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)*iter);
     test_DoublyLinkedList_getHead(list, &node);
     for (++iter; iter != elements.cend(); ++iter){
@@ -218,7 +218,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference)
         test_DoublyLinkedList_getNext(list, &node);
     }
     verifyListContent(list, elements);
-    test_DoublyLinkedList_delete(list);
+    test_DoublyLinkedList_deleteList(list);
 }
 
 
