@@ -2,7 +2,13 @@
     "version": 6,
     "configurePresets": [
         {
+            "name": "config-common",
+            "hidden": true,
+            "generator": "Ninja"
+        },
+        {
             "name": "config-debug",
+            "inherits": ["config-common"],
             "description": "Debug build using safe version of the library",
             "binaryDir": "${sourceDir}/build/debug",
             "cacheVariables": {
@@ -15,6 +21,7 @@
         },
         {
             "name": "config-release",
+            "inherits": ["config-common"],
             "description": "Release build using non-safe version of the library",
             "binaryDir": "${sourceDir}/build/release",
             "cacheVariables": {
