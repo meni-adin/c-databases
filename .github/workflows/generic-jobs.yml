@@ -1,0 +1,54 @@
+name: Generic jobs
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      # - name: Set up Visual Studio
+      #   if: runner.os == 'Windows'
+      #   uses: ilammy/msvc-dev-cmd@v1
+      #   with:
+      #     arch: x64
+      - name: Install dependencies (Linux)
+        if:   runner.os == 'Linux'
+        run:  sudo apt update && sudo apt install -y ninja-build
+      - name: Configure CMake
+        run:  cmake --preset config-debug
+      - name: Build
+        run:  cmake --build --preset build-debug
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ inputs.os }}
+          path: build/
+
+  test:
+    runs-on: ${{ inputs.os }}
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ inputs.os }}
+          path: build/
+      - name: Set execute permission (Unix)
+        if:   runner.os != 'Windows'
+        run:  chmod u+x build/test/my_math_lib_ut/my_math_lib_ut
+      - name:  Run tests
+        shell: bash
+        run:   ./build/debug/test/my_math_lib_ut/my_math_lib_ut
+        # run: |
+        #   if [[ "$RUNNER_OS" == "Windows" ]]; then
+        #     ./build/test/my_math_lib_ut/Debug/my_math_lib_ut
+        #   else
+        #     ./build/debug/test/my_math_lib_ut/my_math_lib_ut
+        #   fi

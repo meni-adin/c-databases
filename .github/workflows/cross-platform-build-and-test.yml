@@ -1,0 +1,19 @@
+name: Cross-Platform Build and Test
+
+on: [workflow_dispatch, push, pull_request] # TODO: [madin] remove 'push' once PR is required
+
+jobs:
+  build-and-test-ubuntu:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: ubuntu-latest
+
+  build-and-test-windows:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: windows-latest
+
+  build-and-test-macos:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: macos-latest
