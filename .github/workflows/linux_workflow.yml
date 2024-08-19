@@ -7,6 +7,8 @@ jobs:
     steps:
       - name: Check-out repository code
         uses: actions/checkout@v4
+      - name: Install dependencies
+        run:  sudo apt update && sudo apt install -y ninja-build
       - name: Configure CMake
         run:  cmake --preset config-debug
       - name: Build
