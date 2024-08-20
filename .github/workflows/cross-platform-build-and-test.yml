@@ -3,17 +3,38 @@ name: Cross-Platform Build and Test
 on: [workflow_dispatch, pull_request]
 
 jobs:
-  build-and-test-ubuntu:
+  build-and-test-ubuntu-debug:
     uses: ./.github/workflows/generic-jobs.yml
     with:
       os: ubuntu-latest
+      build_type: debug
 
-  build-and-test-windows:
+  build-and-test-ubuntu-release:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: ubuntu-latest
+      build_type: release
+
+  build-and-test-windows-debug:
     uses: ./.github/workflows/generic-jobs.yml
     with:
       os: windows-latest
+      build_type: debug
 
-  build-and-test-macos:
+  build-and-test-windows-release:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: windows-latest
+      build_type: release
+
+  build-and-test-macos-debug:
     uses: ./.github/workflows/generic-jobs.yml
     with:
       os: macos-latest
+      build_type: debug
+
+  build-and-test-macos-release:
+    uses: ./.github/workflows/generic-jobs.yml
+    with:
+      os: macos-latest
+      build_type: release
