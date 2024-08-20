@@ -6,6 +6,9 @@ on:
       os:
         required: true
         type: string
+      build_type:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -25,13 +28,13 @@ jobs:
         if:   runner.os == 'macOS'
         run:  brew install ninja
       - name: Configure CMake
-        run:  cmake --preset config-debug
+        run:  cmake --preset config-${{ inputs.build_type }}
       - name: Build
-        run:  cmake --build --preset build-debug
+        run:  cmake --build --preset build-${{ inputs.build_type }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ inputs.os }}
+          name: build-${{ inputs.os }}-${{ inputs.build_type }}
           path: build/
 
   test:
@@ -41,11 +44,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-${{ inputs.os }}
+          name: build-${{ inputs.os }}-${{ inputs.build_type }}
           path: build/
       - name: Set execute permission (Unix)
         if:   runner.os != 'Windows'
-        run:  chmod u+x build/debug/test/doubly_linked_list_test/doubly_linked_list_test
+        run:  chmod u+x build/${{ inputs.build_type }}/test/doubly_linked_list_test/doubly_linked_list_test
       - name:  Run tests
         shell: bash
-        run:   ./build/debug/test/doubly_linked_list_test/doubly_linked_list_test
+        run:   ./build/${{ inputs.build_type }}/test/doubly_linked_list_test/doubly_linked_list_test
