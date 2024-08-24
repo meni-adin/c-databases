@@ -18,6 +18,8 @@ jobs:
       - name: Create file
         run: echo "hello" > hello.txt
       - name: Print diff
-        run: git diff
+        run: |
+         git diff > diff.txt
+         cat diff.txt
       - name: Check for changes
         run: git diff --exit-code || (echo "Code formatting issues detected. Please run 'clang-format' on your code." && exit 1)
