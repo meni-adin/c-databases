@@ -1,0 +1,17 @@
+name: Check Code Formatting
+
+on: [workflow_dispatch, pull_request]
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Clang-Format
+        run: sudo apt update && sudo apt install -y clang-format
+      - name: Run clang-format
+        run: cmake -P cmake/run_clang_format.cmake
+      - name: Check for changes
+        run: git diff --exit-code || (echo "Code formatting issues detected. Please run 'clang-format' on your code." && exit 1)
