@@ -14,4 +14,6 @@ jobs:
       - name: Run clang-format
         run: cmake -P cmake/run_clang_format.cmake
       - name: Check for changes
+        run: git diff
+      - name: Check for changes
         run: git diff --exit-code || (echo "Code formatting issues detected. Please run 'clang-format' on your code." && exit 1)
