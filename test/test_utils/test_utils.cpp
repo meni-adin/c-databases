@@ -54,7 +54,7 @@ void TestUtils::initVecZeroToNineOdd() {
 void TestUtils::initVecZeroToNineEven() {
     constexpr size_t stride = 2;
 
-    for (auto it = vecZeroToNine.cbegin(); it < vecZeroToNine.cend(); it += stride) {
+    for (auto it = vecZeroToNine.cbegin(); it < vecZeroToNine.cend(); it += stride){
         vecZeroToNineEven_.push_back(*it);
         if (vecZeroToNine.cend() - it < stride) {
             break;
