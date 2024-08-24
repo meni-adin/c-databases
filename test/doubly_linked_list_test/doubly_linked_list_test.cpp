@@ -1,229 +1,213 @@
 
 #include <gmock/gmock.h>
+
 #include "config.h"
-#include "test_utils.hpp"
 #include "doubly_linked_list.h"
+#include "test_utils.hpp"
 
 using namespace std;
 using namespace testing;
 
-class DoublyLinkedListTest : public ::testing::Test
-{
+class DoublyLinkedListTest : public ::testing::Test {
 protected:
     static inline unique_ptr<TestUtils> testUtils;
 
-    static void SetUpTestSuite()
-    {
+    static void SetUpTestSuite() {
         testUtils.reset(new TestUtils{});
     }
 
-    static void TearDownTestSuite()
-    {
+    static void TearDownTestSuite() {
     }
 
-    void test_DoublyLinkedList_newList(DoublyLinkedList_t **list, status_t expectedStatus=SUCCESS)
-    {
+    void test_DoublyLinkedList_newList(DoublyLinkedList_t **list, status_t expectedStatus = SUCCESS) {
         status_t status;
 
         status = DoublyLinkedList_newList(list);
         EXPECT_EQ(status, expectedStatus);
     }
 
-    void test_DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListDataDestructor_t destructor=NULL, status_t expectedStatus=SUCCESS)
-    {
+    void test_DoublyLinkedList_deleteList(DoublyLinkedList_t              *list,
+                                          DoublyLinkedListDataDestructor_t destructor     = NULL,
+                                          status_t                         expectedStatus = SUCCESS) {
         status_t status;
 
         status = DoublyLinkedList_deleteList(list, destructor);
         EXPECT_EQ(status, expectedStatus);
     }
 
-    void test_DoublyLinkedList_insertNode(DoublyLinkedList_t *list, const DoublyLinkedListNode_t *reference, DoublyLinkedListDirection_t direction, void *data)
-    {
+    void test_DoublyLinkedList_insertNode(DoublyLinkedList_t           *list,
+                                          const DoublyLinkedListNode_t *reference,
+                                          DoublyLinkedListDirection_t   direction,
+                                          void                         *data) {
         status_t status;
 
         status = DoublyLinkedList_insertNode(list, reference, direction, data);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListNode_t *node)
-    {
+    void test_DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListNode_t *node) {
         status_t status;
 
         status = DoublyLinkedList_removeNode(list, node);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_getHead(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
-    {
+    void test_DoublyLinkedList_getHead(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node) {
         status_t status;
 
         status = DoublyLinkedList_getHead(list, node);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_getTail(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
-    {
+    void test_DoublyLinkedList_getTail(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node) {
         status_t status;
 
         status = DoublyLinkedList_getTail(list, node);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_getNext(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
-    {
+    void test_DoublyLinkedList_getNext(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node) {
         status_t status;
 
         status = DoublyLinkedList_getNext(list, node);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_getPrev(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node)
-    {
+    void test_DoublyLinkedList_getPrev(const DoublyLinkedList_t *list, DoublyLinkedListNode_t **node) {
         status_t status;
 
         status = DoublyLinkedList_getPrev(list, node);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void test_DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **data)
-    {
+    void test_DoublyLinkedList_getData(const DoublyLinkedListNode_t *node, void **data) {
         status_t status;
 
         status = DoublyLinkedList_getData(node, data);
         EXPECT_EQ(status, SUCCESS);
     }
 
-    void verifyListContent(const DoublyLinkedList_t *list, const vector<const char*> &elements)
-    {
-        status_t status;
+    void verifyListContent(const DoublyLinkedList_t *list, const vector<const char *> &elements) {
+        status_t                status;
         DoublyLinkedListNode_t *node;
-        void *data;
+        void                   *data;
 
         test_DoublyLinkedList_getHead(list, &node);
-        for (auto iter = elements.cbegin(); iter != elements.cend(); ++iter)
-        {
+        for (auto iter = elements.cbegin(); iter != elements.cend(); ++iter) {
             test_DoublyLinkedList_getData(node, &data);
-            EXPECT_STREQ(*iter, (const char*)data);
+            EXPECT_STREQ(*iter, (const char *)data);
             test_DoublyLinkedList_getNext(list, &node);
         }
         EXPECT_EQ(node, nullptr);
 
         test_DoublyLinkedList_getTail(list, &node);
-        for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter)
-        {
+        for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter) {
             test_DoublyLinkedList_getData(node, &data);
-            EXPECT_STREQ(*iter, (const char*)data);
+            EXPECT_STREQ(*iter, (const char *)data);
             test_DoublyLinkedList_getPrev(list, &node);
         }
         EXPECT_EQ(node, nullptr);
     }
 };
 
-
 #ifdef C_DATABASES_SAFE_MODE
-TEST_F(DoublyLinkedListTest, InvalidArguments)
-{
+TEST_F(DoublyLinkedListTest, InvalidArguments) {
     test_DoublyLinkedList_newList(NULL, ERR_BAD_ARGUMENT);
 }
-#endif // C_DATABASES_SAFE_MODE
+#endif  // C_DATABASES_SAFE_MODE
 
-TEST_F(DoublyLinkedListTest, NewAndDelete)
-{
+TEST_F(DoublyLinkedListTest, NewAndDelete) {
     DoublyLinkedList_t *list;
-    auto &elements = testUtils->vecEmpty;
+    auto               &elements = testUtils->vecEmpty;
 
     test_DoublyLinkedList_newList(&list);
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertSingleElementAtHead)
-{
+TEST_F(DoublyLinkedListTest, InsertSingleElementAtHead) {
     DoublyLinkedList_t *list;
-    auto &elements = testUtils->vecSingle;
+    auto               &elements = testUtils->vecSingle;
 
     test_DoublyLinkedList_newList(&list);
-    for (const auto iter : elements)
-        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)iter);
+    for (const auto iter : elements) {
+        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)iter);
+    }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertSingleElementAtTail)
-{
+TEST_F(DoublyLinkedListTest, InsertSingleElementAtTail) {
     DoublyLinkedList_t *list;
-    auto &elements = testUtils->vecSingle;
+    auto               &elements = testUtils->vecSingle;
 
     test_DoublyLinkedList_newList(&list);
-    for (const auto iter : elements)
-        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)iter);
+    for (const auto iter : elements) {
+        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter);
+    }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead)
-{
+TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead) {
     DoublyLinkedList_t *list;
-    auto &elements = testUtils->vecZeroToNine;
+    auto               &elements = testUtils->vecZeroToNine;
 
     test_DoublyLinkedList_newList(&list);
-    for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter)
-        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)*iter);
+    for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter) {
+        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)*iter);
+    }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtTail)
-{
+TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtTail) {
     DoublyLinkedList_t *list;
-    auto &elements = testUtils->vecZeroToNine;
+    auto               &elements = testUtils->vecZeroToNine;
 
     test_DoublyLinkedList_newList(&list);
-    for (const auto iter : elements)
-        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)iter);
+    for (const auto iter : elements) {
+        test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter);
+    }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference)
-{
-    DoublyLinkedList_t *list;
+TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference) {
+    DoublyLinkedList_t     *list;
     DoublyLinkedListNode_t *node;
-    auto &elements = testUtils->vecZeroToNine;
-    auto iter = elements.crbegin();
+    auto                   &elements = testUtils->vecZeroToNine;
+    auto                    iter     = elements.crbegin();
 
     test_DoublyLinkedList_newList(&list);
-    test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)*iter);
+    test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)*iter);
     test_DoublyLinkedList_getHead(list, &node);
-    for (++iter; iter != elements.crend(); ++iter){
-        test_DoublyLinkedList_insertNode(list, node, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)*iter);
+    for (++iter; iter != elements.crend(); ++iter) {
+        test_DoublyLinkedList_insertNode(list, node, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)*iter);
         test_DoublyLinkedList_getPrev(list, &node);
     }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference)
-{
-    DoublyLinkedList_t *list;
+TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference) {
+    DoublyLinkedList_t     *list;
     DoublyLinkedListNode_t *node;
-    auto &elements = testUtils->vecZeroToNine;
-    auto iter = elements.cbegin();
+    auto                   &elements = testUtils->vecZeroToNine;
+    auto                    iter     = elements.cbegin();
 
     test_DoublyLinkedList_newList(&list);
-    test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void*)*iter);
+    test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)*iter);
     test_DoublyLinkedList_getHead(list, &node);
-    for (++iter; iter != elements.cend(); ++iter){
-        test_DoublyLinkedList_insertNode(list, node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void*)*iter);
+    for (++iter; iter != elements.cend(); ++iter) {
+        test_DoublyLinkedList_insertNode(list, node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)*iter);
         test_DoublyLinkedList_getNext(list, &node);
     }
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
 
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
