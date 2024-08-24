@@ -16,7 +16,7 @@ jobs:
       - name: Working directory
         run: pwd
       - name: Create file
-        run: echo "hello" > hello.txt
+        run: echo "hello" >> CMakeLists.txt
       - name: Print diff
         run: |
          git diff > diff.txt
