@@ -36,6 +36,7 @@ jobs:
         with:
           name: build-${{ inputs.os }}-${{ inputs.build_type }}
           path: build/
+          retention-days: 1
 
   test:
     runs-on: ${{ inputs.os }}
