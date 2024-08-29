@@ -1,4 +1,3 @@
-import os
-import pathlib
+from pathlib import Path
 
-WORKING_DIR = os.path.join(pathlib.Path(__file__).parent.resolve(), '..')
+WORKING_DIR = Path(__file__).parent.parent.resolve()
