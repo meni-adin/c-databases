@@ -12,6 +12,6 @@ jobs:
       - name: Set up Clang-Format
         run: sudo apt update && sudo apt install -y clang-format
       - name: Run clang-format
-        run: cmake -P cmake/run_clang_format.cmake
+        run: python scripts/run_clang_format.py
       - name: Check for changes
         run: git diff --exit-code || (echo "Code formatting issues detected. Please run 'clang-format' on your code." && exit 1)
