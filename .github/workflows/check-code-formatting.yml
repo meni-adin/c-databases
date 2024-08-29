@@ -11,6 +11,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Clang-Format
         run: sudo apt update && sudo apt install -y clang-format
+      - name: Print version
+        run: clang-format --version
       - name: Run clang-format
         run: python scripts/run_clang_format.py
       - name: Check for changes
