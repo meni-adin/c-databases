@@ -20,5 +20,5 @@ for directory in directories:
 
 for file in c_cpp_files:
     print(f'Running clang-format on {file}')
-    command = f'clang-format -style=file:{CLANG_FORMAT_CFG} -i {file}'
+    command = f'clang-format-17 -style=file:{CLANG_FORMAT_CFG} -i {file}'
     subprocess.run(shlex.split(command), check=True)
