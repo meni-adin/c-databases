@@ -10,6 +10,7 @@ RUN apt install python3
 RUN apt install valgrind
 RUN apt install ninja-build
 RUN apt install git
+RUN apt install clang-format
 
 WORKDIR /root/
 COPY . .
