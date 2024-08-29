@@ -2,6 +2,7 @@ name: Check Code Formatting
 
 on: [workflow_dispatch, pull_request]
 
+# sudo apt update && sudo apt install -y clang-format-18
 jobs:
   check-formatting:
     runs-on: ubuntu-latest
@@ -10,7 +11,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up Clang-Format
-        run: sudo apt update && sudo apt install -y clang-format-18
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 17
       - name: Print OS version
         run: cat /etc/os-release
       - name: Print clang-format version
