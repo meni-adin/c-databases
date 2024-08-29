@@ -20,7 +20,7 @@ AlignConsecutiveDeclarations:
   AcrossEmptyLines: false
   AcrossComments: true
   AlignFunctionPointers: false
-AlignConsecutiveMacros: AcrossComments
+AlignConsecutiveMacrosw: AcrossComments
   # Enabled: true
   # AcrossEmptyLines: false
   # AcrossComments: true
