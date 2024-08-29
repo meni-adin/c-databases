@@ -20,10 +20,10 @@ AlignConsecutiveDeclarations:
   AcrossEmptyLines: false
   AcrossComments: true
   AlignFunctionPointers: false
-AlignConsecutiveMacrosw: AcrossComments
-  # Enabled: true
-  # AcrossEmptyLines: false
-  # AcrossComments: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
 AlignConsecutiveShortCaseStatements:
   Enabled: false
 AlignEscapedNewlines: Left

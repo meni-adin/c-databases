@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up Clang-Format
-        run: sudo apt update && sudo apt install -y clang-format
+        run: sudo apt update && sudo apt install -y clang-format-18
       - name: Print OS version
         run: cat /etc/os-release
       - name: Print clang-format version
