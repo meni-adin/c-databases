@@ -1,6 +1,4 @@
-import os
 import subprocess
-import shlex
 import utils
 from pathlib import Path
 
@@ -21,4 +19,4 @@ for directory in directories:
 for file in c_cpp_files:
     print(f'Running clang-format on {file}')
     command = f'clang-format -style=file:{CLANG_FORMAT_CFG} -i {file}'
-    subprocess.run(shlex.split(command), check=True)
+    subprocess.run(command, shell=True, check=True)
