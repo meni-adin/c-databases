@@ -2,11 +2,11 @@ import subprocess
 import utils
 from pathlib import Path
 
-CLANG_FORMAT_CFG = utils.WORKING_DIR/'clang_format.yml'
+CLANG_FORMAT_CFG = utils.PROJECT_DIR/'clang_format.yml'
 
 directories = [
-    utils.WORKING_DIR/'src',
-    utils.WORKING_DIR/'test',
+    utils.PROJECT_DIR/'src',
+    utils.PROJECT_DIR/'test',
 ]
 
 c_cpp_files = []
