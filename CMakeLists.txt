@@ -12,7 +12,9 @@ configure_file(config.h.in config.h)
 include_directories(${CMAKE_BINARY_DIR})
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/cmake" MY_CMAKE_SCRIPTS_DIR)
 set(CMAKE_MODULE_PATH "${MY_CMAKE_SCRIPTS_DIR}" ${CMAKE_MODULE_PATH})
-set(FETCHCONTENT_QUIET FALSE)
+
+include(fetch_content_wrapper)
+init_fetch_content_wrapper()
 
 include(CTest)
 
