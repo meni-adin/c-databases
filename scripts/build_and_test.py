@@ -42,5 +42,5 @@ for build_type in requested_build_types:
                 exit(1)
         for key in tests_executables_dict:
             # print(key)
-            command = f'valgrind --error-exitcode=1 {key}'
+            command = f'valgrind --error-exitcode=1 --leak-check=full {key}'
             result = subprocess.run(command, shell=True, check=True)
