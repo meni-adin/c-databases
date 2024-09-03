@@ -16,67 +16,20 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
-      - name: Install dependencies (Linux)
+      - name: Set-up (Linux)
         if:   runner.os == 'Linux'
         run: |
           sudo apt update
           sudo apt install -y ninja-build
           sudo apt install -y valgrind
-      - name: Set up Visual Studio (Windows)
+      - name: Set-up (Windows)
         if:   runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-      - name: Install dependencies (macOS)
+      - name: Set-up (macOS)
         if:   runner.os == 'macOS'
         run:  brew install ninja
-      # - name: Set execute permissions (Unix)
-      #   if:   runner.os != 'Windows'
-      #   run:  chmod u+x build/${{ inputs.build_type }}/test/doubly_linked_list_test/doubly_linked_list_test
       - name:  Run Python script
         shell: bash
         run:   python scripts/build_and_test.py -b ${{ inputs.build_type }}
-
-# jobs:
-#   build:
-#     runs-on: ${{ inputs.os }}
-#     steps:
-#       - name: Checkout repository code
-#         uses: actions/checkout@v4
-#       - name: Install dependencies (Linux)
-#         if:   runner.os == 'Linux'
-#         run:  sudo apt update && sudo apt install -y ninja-build
-#       - name: Set up Visual Studio (Windows)
-#         if: runner.os == 'Windows'
-#         uses: ilammy/msvc-dev-cmd@v1
-#         with:
-#           arch: x64
-#       - name: Install dependencies (macOS)
-#         if:   runner.os == 'macOS'
-#         run:  brew install ninja
-#       - name: Configure CMake
-#         run:  cmake --preset config-${{ inputs.build_type }}
-#       - name: Build
-#         run:  cmake --build --preset build-${{ inputs.build_type }}
-#       - name: Upload artifact
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: build-${{ inputs.os }}-${{ inputs.build_type }}
-#           path: build/
-#           retention-days: 1
-
-#   test:
-#     runs-on: ${{ inputs.os }}
-#     needs: build
-#     steps:
-#       - name: Download artifact
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: build-${{ inputs.os }}-${{ inputs.build_type }}
-#           path: build/
-#       - name: Set execute permission (Unix)
-#         if:   runner.os != 'Windows'
-#         run:  chmod u+x build/${{ inputs.build_type }}/test/doubly_linked_list_test/doubly_linked_list_test
-#       - name:  Run tests
-#         shell: bash
-#         run:   ./build/${{ inputs.build_type }}/test/doubly_linked_list_test/doubly_linked_list_test
