@@ -1,7 +1,7 @@
+import argparse
 import json
 import subprocess
 import utils
-import argparse
 
 BUILD_TYPES = ['debug', 'release']
 

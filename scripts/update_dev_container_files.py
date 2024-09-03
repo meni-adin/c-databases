@@ -1,6 +1,6 @@
+import os
 import subprocess
 import utils
-import os
 
 IGNORE = ['build', '.git',]
 

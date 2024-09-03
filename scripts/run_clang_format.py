@@ -1,6 +1,6 @@
+from pathlib import Path
 import subprocess
 import utils
-from pathlib import Path
 
 CLANG_FORMAT_CFG = utils.PROJECT_DIR/'clang_format.yml'
 
