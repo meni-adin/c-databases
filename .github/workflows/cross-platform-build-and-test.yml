@@ -3,13 +3,13 @@ name: Cross-Platform Build and Test
 on: [workflow_dispatch, pull_request]
 
 jobs:
-  ubuntu-debug:
+  linux-debug:
     uses: ./.github/workflows/generic-jobs.yml
     with:
       os: ubuntu-latest
       build_type: debug
 
-  ubuntu-release:
+  linux-release:
     uses: ./.github/workflows/generic-jobs.yml
     with:
       os: ubuntu-latest
