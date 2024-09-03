@@ -1,6 +1,6 @@
+from pathlib import Path
 import subprocess
 import sys
-from pathlib import Path
 
 PROJECT_DIR = Path(__file__).parent.parent.resolve()
 SCRIPTS_DIR = PROJECT_DIR / 'scripts'
