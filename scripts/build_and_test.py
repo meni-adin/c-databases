@@ -1,10 +1,22 @@
+import json
 import subprocess
-import sys
 import utils
+import argparse
 
 BUILD_TYPES = ['debug', 'release']
 
-for build_type in BUILD_TYPES:
+parser = argparse.ArgumentParser(description='Build and test C/C++ code')
+parser.add_argument('-b', '--build-type', type=str, choices=BUILD_TYPES, help='Type of the build', default=None)
+args = parser.parse_args()
+
+if args.build_type:
+    requested_build_types = [args.build_type]
+else:
+    requested_build_types = BUILD_TYPES
+
+print(f'{requested_build_types=:}\n')
+
+for build_type in requested_build_types:
     command = f'cmake --preset config-{build_type}'
     subprocess.run(command, shell=True, check=True)
 
@@ -15,28 +27,20 @@ for build_type in BUILD_TYPES:
     subprocess.run(command, shell=True, check=True)
 
     if(utils.program_available('valgrind')):
-        valgrind_passed = False
-        # command = f'valgrind ctest --preset test-{build_type}'
-        command = f'valgrind build/{build_type}/test/doubly_linked_list_test/doubly_linked_list_test'
-        print('original:', file=sys.stderr, flush=True)
-        subprocess.run(command, shell=True, check=True)
-        # result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        # print('stdout:', file=sys.stderr)
-        # for line in result.stdout.splitlines():
-        #     print(line)
-        #     if 'All heap blocks were freed -- no leaks are possible' in line:
-        #         print('found in stdout')
-        #         valgrind_passed = True
-        # for line in result.stderr.splitlines():
-        #     print(line)
-        #     if 'All heap blocks were freed -- no leaks are possible' in line:
-        #         print('found in stderr')
-        #         valgrind_passed = True
+        command = f'ctest --preset test-{build_type} --show-only=json-v1'
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, text=True)
 
-        #     if ('All heap blocks were freed -- no leaks are possible' in line):
-        #         valgrind_passed = True
-        # if valgrind_passed:
-        #     print('valgrind test passed')
-        # else:
-        #     print('valgrind test failed')
-        #     exit(1)
+        tests_json = json.loads(result.stdout)
+        tests = tests_json.get('tests', [])
+        tests_executables_dict = {}
+        for test in tests:
+            command = test.get('command', [])
+            if command:
+                tests_executables_dict[command[0]] = None
+            else:
+                print(f"No commands found for test {test.get('name')}")
+                exit(1)
+        for key in tests_executables_dict:
+            # print(key)
+            command = f'valgrind --error-exitcode=1 --leak-check=full {key}'
+            result = subprocess.run(command, shell=True, check=True)

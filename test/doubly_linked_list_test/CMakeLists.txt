@@ -21,4 +21,3 @@ target_link_libraries(${TARGET_NAME}
 )
 
 gtest_discover_tests(${TARGET_NAME})
-
