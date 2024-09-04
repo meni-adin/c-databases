@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "config.h"
 #include "errors.h"
 
 typedef struct DoublyLinkedListNode_t_ DoublyLinkedListNode_t;
