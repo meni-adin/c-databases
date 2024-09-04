@@ -1,7 +1,6 @@
 
 #include <gmock/gmock.h>
 
-#include "config.h"
 #include "doubly_linked_list.h"
 #include "test_utils.hpp"
 

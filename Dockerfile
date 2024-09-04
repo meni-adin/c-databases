@@ -11,12 +11,14 @@ RUN apt install ninja-build
 RUN apt install python3
 RUN apt install valgrind
 
+ARG REPO_NAME=c-errors
+
 WORKDIR /root/
-COPY . c-databases
+COPY . ${REPO_NAME}
 
 ARG CACHEBUST=1
-RUN git clone --depth 1 https://github.com/meni-adin/c-errors.git _github.com/meni-adin/c-errors
 RUN git clone --depth 1 https://github.com/google/googletest.git _github.com/google/googletest
+RUN git clone --depth 1 https://github.com/meni-adin/c-errors.git _github.com/meni-adin/c-errors
 
-WORKDIR /root/c-databases
+WORKDIR /root/${REPO_NAME}
 CMD ["python3", "scripts/build_and_test.py"]

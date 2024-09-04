@@ -6,10 +6,6 @@ set(TARGET_SOURCES
     "doubly_linked_list_test.cpp"
 )
 
-set(TARGET_HEADERS
-)
-
-
 add_executable(${TARGET_NAME}
     ${TARGET_SOURCES}
 )

@@ -2,6 +2,7 @@
 #ifndef DOUBLY_LINKED_LIST_H
 #define DOUBLY_LINKED_LIST_H
 
+#include "c_databases_config.h"
 #include "errors.h"
 
 #ifdef __cplusplus
