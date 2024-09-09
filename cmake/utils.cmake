@@ -7,6 +7,11 @@ function(set_target_c_compiler_flags target)
             -Wpedantic
             -Wvla
             -Wformat
+            # -Wshadow  # turned off as it may be useful in macros
+            -Wconversion
+            -Wnull-dereference
+            -Wdouble-promotion
+            -Wimplicit-fallthrough
         )
         if(${CMAKE_C_COMPILER_ID} STREQUAL "AppleClang")
         endif()
