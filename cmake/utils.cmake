@@ -15,7 +15,8 @@ function(set_target_c_compiler_flags target)
                 -Wformat-signedness
             )
         endif()
-    elseif(${CMAKE_C_COMPILER_ID} STREQUAL "visual studio") # check exact name
+    elseif(${CMAKE_C_COMPILER_ID} STREQUAL "MSVC")
+        message(WARNING "Missing compiler flags for ${CMAKE_C_COMPILER_ID}")
     else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
