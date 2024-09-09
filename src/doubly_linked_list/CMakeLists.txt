@@ -15,3 +15,5 @@ target_include_directories(${TARGET_NAME}
 target_link_libraries(${TARGET_NAME}
     errors
 )
+
+set_target_c_compiler_flags(${TARGET_NAME})

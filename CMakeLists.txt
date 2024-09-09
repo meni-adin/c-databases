@@ -23,6 +23,7 @@ include_directories(${INCLUDE_DIRECTORIES_TO_PROPAGATE})
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/cmake" MY_CMAKE_SCRIPTS_DIR)
 set(CMAKE_MODULE_PATH "${MY_CMAKE_SCRIPTS_DIR}" ${CMAKE_MODULE_PATH})
 
+include(utils)
 include(fetch_content_wrapper)
 init_fetch_content_wrapper()
 
