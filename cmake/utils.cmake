@@ -1,5 +1,5 @@
 function(set_target_c_compiler_flags target)
-    if(${CMAKE_C_COMPILER_ID} STREQUAL "MSVC")
+    if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
         message(STATUS "I'm a C compiler ${CMAKE_C_COMPILER_ID}")
     endif()
 
