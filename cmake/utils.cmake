@@ -21,8 +21,11 @@ function(set_target_c_compiler_flags target)
             )
         endif()
     elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-        message(WARNING "Missing compiler flags for ${CMAKE_C_COMPILER_ID}")
-    else()
+        target_compile_options(${target} PRIVATE
+            /Wall
+            /WX
+        )
+else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
 endfunction()
