@@ -1,5 +1,6 @@
 
-#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <memory>
 
 #include "doubly_linked_list.h"
 #include "test_utils.hpp"
@@ -12,17 +13,10 @@ protected:
     static inline unique_ptr<TestUtils> testUtils;
 
     static void SetUpTestSuite() {
-        testUtils.reset(new TestUtils{});
+        testUtils = make_unique<TestUtils>();
     }
 
     static void TearDownTestSuite() {
-    }
-
-    void test_DoublyLinkedList_newList(DoublyLinkedList_t **list, status_t expectedStatus = SUCCESS) {
-        status_t status;
-
-        status = DoublyLinkedList_newList(list);
-        EXPECT_EQ(status, expectedStatus);
     }
 
     void test_DoublyLinkedList_deleteList(DoublyLinkedList_t              *list,
@@ -111,7 +105,7 @@ protected:
 
 #ifdef C_DATABASES_SAFE_MODE
 TEST_F(DoublyLinkedListTest, InvalidArguments) {
-    test_DoublyLinkedList_newList(NULL, ERR_BAD_ARGUMENT);
+    ASSERT_EQ(DoublyLinkedList_newList(NULL), ERR_BAD_ARGUMENT);
 }
 #endif  // C_DATABASES_SAFE_MODE
 
@@ -119,7 +113,7 @@ TEST_F(DoublyLinkedListTest, NewAndDelete) {
     DoublyLinkedList_t *list;
     auto               &elements = testUtils->vecEmpty;
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     verifyListContent(list, elements);
     test_DoublyLinkedList_deleteList(list);
 }
@@ -128,7 +122,7 @@ TEST_F(DoublyLinkedListTest, InsertSingleElementAtHead) {
     DoublyLinkedList_t *list;
     auto               &elements = testUtils->vecSingle;
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     for (const auto iter : elements) {
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)iter);
     }
@@ -140,7 +134,7 @@ TEST_F(DoublyLinkedListTest, InsertSingleElementAtTail) {
     DoublyLinkedList_t *list;
     auto               &elements = testUtils->vecSingle;
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     for (const auto iter : elements) {
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter);
     }
@@ -152,7 +146,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead) {
     DoublyLinkedList_t *list;
     auto               &elements = testUtils->vecZeroToNine;
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     for (auto iter = elements.crbegin(); iter != elements.crend(); ++iter) {
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)*iter);
     }
@@ -164,7 +158,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtTail) {
     DoublyLinkedList_t *list;
     auto               &elements = testUtils->vecZeroToNine;
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     for (const auto iter : elements) {
         test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter);
     }
@@ -178,7 +172,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsBeforeReference) {
     auto                   &elements = testUtils->vecZeroToNine;
     auto                    iter     = elements.crbegin();
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)*iter);
     test_DoublyLinkedList_getHead(list, &node);
     for (++iter; iter != elements.crend(); ++iter) {
@@ -195,7 +189,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference) {
     auto                   &elements = testUtils->vecZeroToNine;
     auto                    iter     = elements.cbegin();
 
-    test_DoublyLinkedList_newList(&list);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     test_DoublyLinkedList_insertNode(list, NULL, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)*iter);
     test_DoublyLinkedList_getHead(list, &node);
     for (++iter; iter != elements.cend(); ++iter) {

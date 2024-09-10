@@ -4,7 +4,10 @@
         {
             "name": "config-common",
             "hidden": true,
-            "generator": "Ninja"
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
         },
         {
             "name": "config-debug",

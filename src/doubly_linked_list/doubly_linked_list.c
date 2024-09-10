@@ -1,7 +1,6 @@
 
 #include "doubly_linked_list.h"
 
-#include <assert.h>
 #include <stdlib.h>
 
 #include "errors.h"
@@ -22,7 +21,7 @@ struct DoublyLinkedList_t_ {
 };
 
 #define DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction) \
-    ((direction == DOUBLY_LINKED_LIST_DIRECTION_HEAD) || (direction == DOUBLY_LINKED_LIST_DIRECTION_TAIL))
+    (((direction) == DOUBLY_LINKED_LIST_DIRECTION_HEAD) || ((direction) == DOUBLY_LINKED_LIST_DIRECTION_TAIL))
 
 static inline void DoublyLinkedList_insertNodeBefore(DoublyLinkedListNode_t *reference,
                                                      DoublyLinkedListNode_t *newNode) {
@@ -63,7 +62,7 @@ status_t DoublyLinkedList_deleteList(DoublyLinkedList_t *list, DoublyLinkedListD
 
     if (list->head) {
         list->head->prev->next = NULL;
-        for (currentNode = list->head, nextNode = currentNode->next; currentNode != NULL; currentNode = nextNode) {
+        for (currentNode = list->head; currentNode != NULL; currentNode = nextNode) {
             nextNode = currentNode->next;
             destructor ? destructor(currentNode->data) : (void)destructor;
 #ifdef C_DATABASES_SAFE_MODE

@@ -17,7 +17,7 @@ function(set_target_c_compiler_flags target)
         endif()
         if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             target_compile_options(${target} PRIVATE
-                -Wformat-signedness
+                # -Wformat-signedness  # currently fails clang-tidy using compile_commands.json on Ubuntu
             )
         endif()
     elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")

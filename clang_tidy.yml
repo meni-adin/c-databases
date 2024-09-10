@@ -1,0 +1,16 @@
+---
+Checks: >-
+  *,
+  -abseil-*,
+  -altera-*,
+  -android-*,
+  -cppcoreguidelines-*,
+  -fuchsia-*,
+  -google-*,
+  -llvm*,
+  -zircon-*,
+  -readability-isolate-declaration,
+  -readability-else-after-return,
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle: none
