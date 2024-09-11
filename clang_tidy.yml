@@ -11,6 +11,9 @@ Checks: >-
   -zircon-*,
   -readability-isolate-declaration,
   -readability-else-after-return,
-WarningsAsErrors: ''
-HeaderFilterRegex: ''
+  -readability-function-cognitive-complexity,
+  -modernize-use-trailing-return-type,
 FormatStyle: none
+
+# Notes:
+# - Maybe bring back `readability-function-cognitive-complexity`.
