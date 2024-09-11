@@ -6,8 +6,8 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include <vector>
 #include <ranges>
+#include <vector>
 
 #include "doubly_linked_list.h"
 #include "errors.h"
