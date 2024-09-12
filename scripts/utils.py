@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import platform
 import subprocess
 import sys
 
@@ -16,3 +18,18 @@ def run_command(command, **kwargs):
     print(f'Running command: {command}')
     result = subprocess.run(command, **kwargs)
     return result
+
+def running_on_github_actions():
+    return os.getenv('GITHUB_ACTIONS') == 'true'
+
+def running_on_windows():
+    return platform.system() == 'Windows'
+
+def running_on_linux():
+    return platform.system() == 'Linux'
+
+def running_on_macos():
+    return platform.system() == 'Darwin'
+
+def running_on_unix():
+    return os.name() == 'posix'

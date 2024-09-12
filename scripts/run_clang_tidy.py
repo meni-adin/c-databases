@@ -26,5 +26,5 @@ for directory in directories:
 
 for file in c_cpp_source_files:
     print(f'Running clang-tidy on {file}')
-    command = f'clang-tidy --config-file={CLANG_TIDY_CFG_PATH} {error_flag} -p {args.database} {file}'
-    subprocess.run(command, shell=True, check=True)
+    command = f'clang-tidy --config-file={CLANG_TIDY_CFG_PATH} {error_flag}  -p {args.database} {file}'
+    utils.run_command(command, shell=True, check=True)

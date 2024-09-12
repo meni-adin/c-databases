@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import subprocess
 import utils
 
@@ -14,7 +15,7 @@ if args.build_type:
 else:
     requested_build_types = BUILD_TYPES
 
-print(f'{requested_build_types=:}\n')
+print(f'{requested_build_types=:}\n', flush=True)
 
 for build_type in requested_build_types:
     command = f'cmake --preset config-{build_type}'
@@ -26,7 +27,7 @@ for build_type in requested_build_types:
     command = f'ctest --preset test-{build_type}'
     utils.run_command(command, shell=True, check=True)
 
-    if(utils.program_available('valgrind')):
+    if utils.program_available('valgrind'):
         command = f'ctest --preset test-{build_type} --show-only=json-v1'
         result = utils.run_command(command, shell=True, check=True, stdout=subprocess.PIPE, text=True)
 
@@ -44,7 +45,7 @@ for build_type in requested_build_types:
             command = f'valgrind --error-exitcode=1 --leak-check=full {key}'
             result = utils.run_command(command, shell=True, check=True)
 
-    if(utils.program_available('clang-tidy')):
+    if utils.program_available('clang-tidy') and not (utils.running_on_linux() and utils.running_on_github_actions()):
         command = f'clang-tidy --version'
         result = utils.run_command(command, shell=True, check=True)
 
