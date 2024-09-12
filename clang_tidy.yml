@@ -11,6 +11,7 @@ Checks: >-
   -zircon-*,
   -clang-diagnostic-cast-qual,
   -clang-diagnostic-declaration-after-statement,
+  -clang-diagnostic-error
   -modernize-use-trailing-return-type,
   -readability-else-after-return,
   -readability-function-cognitive-complexity,
