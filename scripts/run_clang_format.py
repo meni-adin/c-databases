@@ -1,5 +1,3 @@
-from pathlib import Path
-import subprocess
 import utils
 
 CLANG_FORMAT_CFG = utils.PROJECT_DIR/'clang_format.yml'
@@ -19,4 +17,4 @@ for directory in directories:
 for file in c_cpp_files:
     print(f'Running clang-format on {file}')
     command = f'clang-format -style=file:{CLANG_FORMAT_CFG} -i {file}'
-    subprocess.run(command, shell=True, check=True)
+    utils.run_command(command, shell=True, check=True)
