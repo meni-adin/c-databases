@@ -9,11 +9,13 @@ Checks: >-
   -google-*,
   -llvm*,
   -zircon-*,
-  -readability-isolate-declaration,
+  -clang-diagnostic-cast-qual,
+  -clang-diagnostic-declaration-after-statement,
+  -modernize-use-trailing-return-type,
   -readability-else-after-return,
   -readability-function-cognitive-complexity,
-  -modernize-use-trailing-return-type,
-FormatStyle: none
+  -readability-isolate-declaration,
+# FormatStyle: none
 
 # Notes:
 # - Maybe bring back `readability-function-cognitive-complexity`.

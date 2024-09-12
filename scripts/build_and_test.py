@@ -18,17 +18,17 @@ print(f'{requested_build_types=:}\n')
 
 for build_type in requested_build_types:
     command = f'cmake --preset config-{build_type}'
-    subprocess.run(command, shell=True, check=True)
+    utils.run_command(command, shell=True, check=True)
 
     command = f'cmake --build --preset build-{build_type}'
-    subprocess.run(command, shell=True, check=True)
+    utils.run_command(command, shell=True, check=True)
 
     command = f'ctest --preset test-{build_type}'
-    subprocess.run(command, shell=True, check=True)
+    utils.run_command(command, shell=True, check=True)
 
     if(utils.program_available('valgrind')):
         command = f'ctest --preset test-{build_type} --show-only=json-v1'
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, text=True)
+        result = utils.run_command(command, shell=True, check=True, stdout=subprocess.PIPE, text=True)
 
         tests_json = json.loads(result.stdout)
         tests = tests_json.get('tests', [])
@@ -42,13 +42,13 @@ for build_type in requested_build_types:
                 exit(1)
         for key in tests_executables_dict:
             command = f'valgrind --error-exitcode=1 --leak-check=full {key}'
-            result = subprocess.run(command, shell=True, check=True)
+            result = utils.run_command(command, shell=True, check=True)
 
     if(utils.program_available('clang-tidy')):
         command = f'clang-tidy --version'
-        result = subprocess.run(command, shell=True, check=True)
+        result = utils.run_command(command, shell=True, check=True)
 
         compilation_database_path = utils.PROJECT_DIR/'build'/build_type/'compile_commands.json'
         script = utils.SCRIPTS_DIR/'run_clang_tidy.py'
         command = f'{utils.PYTHON_EXECUTABLE} {script} -d {compilation_database_path} -e'
-        result = subprocess.run(command, shell=True, check=True)
+        result = utils.run_command(command, shell=True, check=True)

@@ -1,9 +1,3 @@
-// clang-format off
-// clang-format on
-
-// Special options for this file:
-// clang-format: { ColumnLimit: 0 }
-
 #include <gtest/gtest.h>
 #include <memory>
 #include <ranges>

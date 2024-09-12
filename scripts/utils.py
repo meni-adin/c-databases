@@ -11,3 +11,8 @@ def program_available(program):
     command = f'{program} --version'
     result = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return result.returncode == 0
+
+def run_command(command, **kwargs):
+    print(f'Running command: {command}')
+    result = subprocess.run(command, **kwargs)
+    return result
