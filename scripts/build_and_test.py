@@ -45,6 +45,9 @@ for build_type in requested_build_types:
             result = subprocess.run(command, shell=True, check=True)
 
     if(utils.program_available('clang-tidy')):
+        command = f'clang-tidy --version'
+        result = subprocess.run(command, shell=True, check=True)
+
         compilation_database_path = utils.PROJECT_DIR/'build'/build_type/'compile_commands.json'
         script = utils.SCRIPTS_DIR/'run_clang_tidy.py'
         command = f'{utils.PYTHON_EXECUTABLE} {script} -d {compilation_database_path} -e'

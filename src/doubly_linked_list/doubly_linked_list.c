@@ -20,8 +20,10 @@ struct DoublyLinkedList_t_ {
     DoublyLinkedListNode_t *head;
 };
 
-#define DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction) \
-    (((direction) == DOUBLY_LINKED_LIST_DIRECTION_HEAD) || ((direction) == DOUBLY_LINKED_LIST_DIRECTION_TAIL))
+#ifdef C_DATABASES_SAFE_MODE
+# define DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction) \
+     (((direction) == DOUBLY_LINKED_LIST_DIRECTION_HEAD) || ((direction) == DOUBLY_LINKED_LIST_DIRECTION_TAIL))
+#endif  // C_DATABASES_SAFE_MODE
 
 static inline void DoublyLinkedList_insertNodeBefore(DoublyLinkedListNode_t *reference,
                                                      DoublyLinkedListNode_t *newNode) {
