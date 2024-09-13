@@ -1,6 +1,6 @@
 import utils
 
-CLANG_FORMAT_CFG = utils.PROJECT_DIR/'.cmake-format.py'
+CMAKE_FORMAT_CFG = utils.CONFIGURATIONS_DIR/'.cmake-format.py'
 
 directories = [
     utils.PROJECT_DIR/'cmake',
