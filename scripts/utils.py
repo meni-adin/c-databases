@@ -6,6 +6,7 @@ import sys
 
 PROJECT_DIR = Path(__file__).parent.parent.resolve()
 SCRIPTS_DIR = PROJECT_DIR/'scripts'
+CONFIGURATIONS_DIR = PROJECT_DIR/'configurations'
 PYTHON_EXECUTABLE = sys.executable
 REPO_NAME = PROJECT_DIR.name
 
