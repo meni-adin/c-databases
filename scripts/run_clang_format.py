@@ -1,6 +1,6 @@
 import utils
 
-CLANG_FORMAT_CFG = utils.PROJECT_DIR/'clang_format.yml'
+CLANG_FORMAT_CFG_PATH = utils.CONFIGURATIONS_DIR/'clang_format.yml'
 
 directories = [
     utils.PROJECT_DIR/'src',
@@ -16,5 +16,5 @@ for directory in directories:
 
 for file in c_cpp_files:
     print(f'Running clang-format on {file}')
-    command = f'clang-format -style=file:{CLANG_FORMAT_CFG} -i {file}'
+    command = f'clang-format -style=file:{CLANG_FORMAT_CFG_PATH} -i {file}'
     utils.run_command(command, shell=True, check=True)

@@ -2,7 +2,7 @@ import argparse
 import subprocess
 import utils
 
-CLANG_TIDY_CFG_PATH = utils.PROJECT_DIR/'clang_tidy.yml'
+CLANG_TIDY_CFG_PATH = utils.CONFIGURATIONS_DIR/'clang_tidy.yml'
 
 parser = argparse.ArgumentParser(description='Run clang-tidy on source files')
 parser.add_argument('-d', '--database', type=str, required=True, help='Compilation-database path')

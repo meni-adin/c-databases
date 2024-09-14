@@ -10,3 +10,6 @@ build
 
 # python cache
 __pycache__
+
+# local python-version for pyenv
+.python-version
