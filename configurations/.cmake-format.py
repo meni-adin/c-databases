@@ -1,6 +1,3 @@
-# -----------------------------
-# Options affecting formatting.
-# -----------------------------
 with section("format"):
     line_width = 140
     tab_size = 4
