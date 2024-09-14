@@ -1,6 +1,6 @@
 import utils
 
-CMAKE_FORMAT_CFG = utils.CONFIGURATIONS_DIR/'.cmake-format.py'
+CMAKE_FORMAT_CFG_PATH = utils.CONFIGURATIONS_DIR/'.cmake-format.py'
 
 directories = [
     utils.PROJECT_DIR/'cmake',
@@ -16,5 +16,5 @@ for directory in directories:
 
 for file in cmake_files:
     print(f'Running cmake-format on {file}')
-    command = f'cmake-format -i {file}'
+    command = f'cmake-format --config-file={CMAKE_FORMAT_CFG_PATH} -i {file}'
     utils.run_command(command, shell=True, check=True)
