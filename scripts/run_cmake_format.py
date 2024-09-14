@@ -1,3 +1,6 @@
+
+# Note: currently not in use.
+
 import utils
 
 CMAKE_FORMAT_CFG_PATH = utils.CONFIGURATIONS_DIR/'.cmake-format.py'
