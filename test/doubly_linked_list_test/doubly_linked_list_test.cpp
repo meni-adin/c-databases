@@ -85,20 +85,16 @@ TEST_F(DoublyLinkedListTest, InvalidArguments) {
     ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
 
     for (const auto *const iter : elements) {
-        ASSERT_EQ(DoublyLinkedList_insertNode(nullptr, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter),
-                  ERR_BAD_ARGUMENT);
+        ASSERT_EQ(DoublyLinkedList_insertNode(nullptr, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter), ERR_BAD_ARGUMENT);
         ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, directionTooSmall, (void *)iter), ERR_BAD_ARGUMENT);
         ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, directionTooLarge, (void *)iter), ERR_BAD_ARGUMENT);
         ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter), SUCCESS);
     }
 
     for (const auto *const iter : elements) {
-        ASSERT_EQ(DoublyLinkedList_findData(nullptr, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter),
-                  ERR_BAD_ARGUMENT);
-        // ASSERT_EQ(DoublyLinkedList_findData(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator,
-        // iter), SUCCESS);
-        ASSERT_EQ(DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter),
-                  SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_findData(nullptr, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter), ERR_BAD_ARGUMENT);
+        ASSERT_EQ(DoublyLinkedList_findData(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter), SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter), SUCCESS);
     }
 
     ASSERT_EQ(DoublyLinkedList_deleteList(nullptr, nullptr), ERR_BAD_ARGUMENT);
@@ -145,8 +141,7 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAtHead) {
 
     ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
     for (const auto *element : std::ranges::reverse_view(elements)) {
-        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)element),
-                  SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_HEAD, (void *)element), SUCCESS);
     }
     verifyListContent(list, elements);
     ASSERT_EQ(DoublyLinkedList_deleteList(list, nullptr), SUCCESS);
@@ -216,9 +211,7 @@ TEST_F(DoublyLinkedListTest, RemoveEvenElements) {
     verifyListContent(list, elements);
     for (const auto *const iter : oddElements) {
         node = nullptr;
-        ASSERT_EQ(
-            DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter),
-            SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter), SUCCESS);
         ASSERT_EQ(DoublyLinkedList_removeNode(list, node), SUCCESS);
     }
     verifyListContent(list, evenElements);
@@ -243,9 +236,7 @@ TEST_F(DoublyLinkedListTest, RemoveOddElements) {
     verifyListContent(list, elements);
     for (const auto *const iter : evenElements) {
         node = nullptr;
-        ASSERT_EQ(
-            DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter),
-            SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter), SUCCESS);
         ASSERT_EQ(DoublyLinkedList_removeNode(list, node), SUCCESS);
     }
     verifyListContent(list, oddElements);
