@@ -1,3 +1,5 @@
+#include <cstring>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
 #include <ranges>
@@ -10,10 +12,17 @@
 using namespace std;
 using namespace testing;
 
-#define XSTR(var) #var
-#define STR(var)  XSTR(var)
+class DestructorMock {
+public:
+    MOCK_METHOD(void, destructor, (void *));
+};
 
 class DoublyLinkedListTest : public ::testing::Test {
+public:
+    static inline unique_ptr<DestructorMock> destructorMock;
+    static const DoublyLinkedListDirection_t directionTooSmall{(DoublyLinkedListDirection_t)-1};
+    static const DoublyLinkedListDirection_t directionTooLarge{(DoublyLinkedListDirection_t)2};
+
 protected:
     static inline unique_ptr<TestUtils> testUtils;
 
@@ -22,6 +31,14 @@ protected:
     }
 
     static void TearDownTestSuite() {
+    }
+
+    void SetUp() override {
+        destructorMock = make_unique<DestructorMock>();
+    }
+
+    void TearDown() override {
+        destructorMock = make_unique<DestructorMock>();
     }
 
     static void verifyListContent(const DoublyLinkedList_t *list, const vector<const char *> &elements) {
@@ -47,9 +64,45 @@ protected:
     }
 };
 
+extern "C" {
+int c_str_comparator(const void *data1, const void *data2) {
+    return strcmp((const char *)data1, (const char *)data2);
+}
+
+void destructor_callback(void *data) {
+    DoublyLinkedListTest::destructorMock->destructor(data);
+}
+}
+
+#define C_DATABASES_SAFE_MODE  // ---------------------------------------------------------- REMOVE---------------------
 #ifdef C_DATABASES_SAFE_MODE
 TEST_F(DoublyLinkedListTest, InvalidArguments) {
+    DoublyLinkedList_t     *list;
+    DoublyLinkedListNode_t *node     = nullptr;
+    const auto             &elements = testUtils->vecSingle;
+
     ASSERT_EQ(DoublyLinkedList_newList(nullptr), ERR_BAD_ARGUMENT);
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
+
+    for (const auto *const iter : elements) {
+        ASSERT_EQ(DoublyLinkedList_insertNode(nullptr, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter),
+                  ERR_BAD_ARGUMENT);
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, directionTooSmall, (void *)iter), ERR_BAD_ARGUMENT);
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, directionTooLarge, (void *)iter), ERR_BAD_ARGUMENT);
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter), SUCCESS);
+    }
+
+    for (const auto *const iter : elements) {
+        ASSERT_EQ(DoublyLinkedList_findData(nullptr, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter),
+                  ERR_BAD_ARGUMENT);
+        // ASSERT_EQ(DoublyLinkedList_findData(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator,
+        // iter), SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, iter),
+                  SUCCESS);
+    }
+
+    ASSERT_EQ(DoublyLinkedList_deleteList(nullptr, nullptr), ERR_BAD_ARGUMENT);
+    ASSERT_EQ(DoublyLinkedList_deleteList(list, nullptr), SUCCESS);
 }
 #endif  // C_DATABASES_SAFE_MODE
 
@@ -143,6 +196,60 @@ TEST_F(DoublyLinkedListTest, InsertMultipleElementsAfterReference) {
     }
     verifyListContent(list, elements);
     ASSERT_EQ(DoublyLinkedList_deleteList(list, nullptr), SUCCESS);
+}
+
+TEST_F(DoublyLinkedListTest, RemoveEvenElements) {
+    DoublyLinkedList_t     *list;
+    DoublyLinkedListNode_t *node;
+    const auto             &elements     = testUtils->vecZeroToNine;
+    const auto             &oddElements  = testUtils->vecZeroToNineOdd;
+    const auto             &evenElements = testUtils->vecZeroToNineEven;
+
+    for (const auto *const iter : evenElements) {
+        EXPECT_CALL(*destructorMock, destructor((void *)iter));
+    }
+
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
+    for (const auto *const iter : elements) {
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter), SUCCESS);
+    }
+    verifyListContent(list, elements);
+    for (const auto *const iter : oddElements) {
+        node = nullptr;
+        ASSERT_EQ(
+            DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter),
+            SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_removeNode(list, node), SUCCESS);
+    }
+    verifyListContent(list, evenElements);
+    ASSERT_EQ(DoublyLinkedList_deleteList(list, destructor_callback), SUCCESS);
+}
+
+TEST_F(DoublyLinkedListTest, RemoveOddElements) {
+    DoublyLinkedList_t     *list;
+    DoublyLinkedListNode_t *node;
+    const auto             &elements     = testUtils->vecZeroToNine;
+    const auto             &oddElements  = testUtils->vecZeroToNineOdd;
+    const auto             &evenElements = testUtils->vecZeroToNineEven;
+
+    for (const auto *const iter : oddElements) {
+        EXPECT_CALL(*destructorMock, destructor((void *)iter));
+    }
+
+    ASSERT_EQ(DoublyLinkedList_newList(&list), SUCCESS);
+    for (const auto *const iter : elements) {
+        ASSERT_EQ(DoublyLinkedList_insertNode(list, nullptr, DOUBLY_LINKED_LIST_DIRECTION_TAIL, (void *)iter), SUCCESS);
+    }
+    verifyListContent(list, elements);
+    for (const auto *const iter : evenElements) {
+        node = nullptr;
+        ASSERT_EQ(
+            DoublyLinkedList_findData(list, &node, DOUBLY_LINKED_LIST_DIRECTION_TAIL, c_str_comparator, (void *)iter),
+            SUCCESS);
+        ASSERT_EQ(DoublyLinkedList_removeNode(list, node), SUCCESS);
+    }
+    verifyListContent(list, oddElements);
+    ASSERT_EQ(DoublyLinkedList_deleteList(list, destructor_callback), SUCCESS);
 }
 
 int main(int argc, char *argv[]) {

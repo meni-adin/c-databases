@@ -138,8 +138,8 @@ status_t DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListN
         list->head = node->next;
     }
 
-    node->next = node->prev;
-    node->prev = node->next;
+    node->next->prev = node->prev;
+    node->prev->next = node->next;
 #ifdef C_DATABASES_SAFE_MODE
     *node = (DoublyLinkedListNode_t){0};
 #endif  // C_DATABASES_SAFE_MODE

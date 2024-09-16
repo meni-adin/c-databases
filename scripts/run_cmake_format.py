@@ -1,5 +1,6 @@
 
-# Note: currently not in use.
+print('Note: currently not in use.')
+exit(1)
 
 import utils
 
