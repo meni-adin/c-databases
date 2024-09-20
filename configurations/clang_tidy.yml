@@ -9,6 +9,7 @@ Checks: >-
   -google-*,
   -llvm*,
   -zircon-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   -clang-diagnostic-cast-qual,
   -clang-diagnostic-declaration-after-statement,
   -clang-diagnostic-error,
