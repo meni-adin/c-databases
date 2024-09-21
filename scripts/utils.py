@@ -16,7 +16,7 @@ def program_available(program):
     return result.returncode == 0
 
 def run_command(command, **kwargs):
-    print(f'Running command: {command}')
+    print(f'Running command: {command}', flush=True)
     result = subprocess.run(command, **kwargs)
     return result
 

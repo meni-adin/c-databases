@@ -24,6 +24,8 @@ function(set_target_c_compiler_flags target)
         target_compile_options(${target} PRIVATE
             /Wall
             /WX
+            /wd4710
+            /wd5045
         )
 else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")

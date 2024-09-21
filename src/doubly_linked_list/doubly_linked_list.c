@@ -40,7 +40,6 @@ status_t DoublyLinkedList_newList(DoublyLinkedList_t **list) {
 #endif  // C_DATABASES_SAFE_MODE
 
     DoublyLinkedList_t *newList = malloc(sizeof(*newList));
-
     if (!newList) {
         return ERR_MEM_ALLOC;
     }
@@ -48,7 +47,6 @@ status_t DoublyLinkedList_newList(DoublyLinkedList_t **list) {
     *newList = (DoublyLinkedList_t){
         .head = NULL,
     };
-
     *list = newList;
 
     return SUCCESS;
@@ -138,8 +136,8 @@ status_t DoublyLinkedList_removeNode(DoublyLinkedList_t *list, DoublyLinkedListN
         list->head = node->next;
     }
 
-    node->next = node->prev;
-    node->prev = node->next;
+    node->next->prev = node->prev;
+    node->prev->next = node->next;
 #ifdef C_DATABASES_SAFE_MODE
     *node = (DoublyLinkedListNode_t){0};
 #endif  // C_DATABASES_SAFE_MODE
@@ -214,8 +212,7 @@ status_t DoublyLinkedList_findData(const DoublyLinkedList_t        *list,
                                    DoublyLinkedListDataComparator_t comparator,
                                    const void                      *data) {
 #ifdef C_DATABASES_SAFE_MODE
-    if (!list || !node || (*node && list != (*node)->list) || !DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction)
-        || !comparator) {
+    if (!list || !node || (*node && list != (*node)->list) || !DOUBLY_LINKED_LIST_DIRECTION_IS_VALID(direction) || !comparator) {
         return ERR_BAD_ARGUMENT;
     }
 #endif  // C_DATABASES_SAFE_MODE
