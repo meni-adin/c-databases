@@ -39,7 +39,7 @@ protected:
     }
 
     void TearDown() override {
-        destructorMock = make_unique<DestructorMock>();
+        destructorMock.reset();
     }
 
     static void verifyListContent(const DoublyLinkedList_t *list, const vector<const char *> &elements) {
