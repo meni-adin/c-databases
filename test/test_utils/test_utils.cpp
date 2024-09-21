@@ -51,7 +51,7 @@ void TestUtils::initVecZeroToNineOdd() {
 
     for (auto it = vecZeroToNine.cbegin() + 1; it < vecZeroToNine.cend(); it += stride) {
         vecZeroToNineOdd_.push_back(*it);
-        if (vecZeroToNine.cend() - it < stride) {
+        if (static_cast<size_t>(vecZeroToNine.cend() - it) < stride) {
             break;
         }
     }
@@ -62,7 +62,7 @@ void TestUtils::initVecZeroToNineEven() {
 
     for (auto it = vecZeroToNine.cbegin(); it < vecZeroToNine.cend(); it += stride) {
         vecZeroToNineEven_.push_back(*it);
-        if (vecZeroToNine.cend() - it < stride) {
+        if (static_cast<size_t>(vecZeroToNine.cend() - it) < stride) {
             break;
         }
     }

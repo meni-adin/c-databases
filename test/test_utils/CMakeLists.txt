@@ -11,3 +11,5 @@ add_library(${TARGET_NAME} STATIC
 target_include_directories(${TARGET_NAME}
     PUBLIC "include"
 )
+
+set_target_cpp_compiler_flags(${TARGET_NAME})

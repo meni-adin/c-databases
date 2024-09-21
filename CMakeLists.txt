@@ -34,6 +34,15 @@ include(utils)
 include(fetch_content_wrapper)
 init_fetch_content_wrapper()
 
+set_compiler_flags()
+if(NOT DEFINED SANITIZED_BUILD)
+    message(FATAL_ERROR "SANITIZED_BUILD must be set to either TRUE or FALSE")
+endif()
+message(STATUS "SANITIZED_BUILD: ${SANITIZED_BUILD}")
+if(SANITIZED_BUILD)
+    enable_sanitizers()
+endif()
+
 include(CTest)
 
 add_subdirectory(src)
