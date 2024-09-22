@@ -31,6 +31,7 @@ static inline void DoublyLinkedList_insertNodeBefore(DoublyLinkedListNode_t *ref
     newNode->next       = reference;
     newNode->prev->next = newNode->next->prev = newNode;
 }
+#include <stdlib.h>
 #include <stdio.h>
 status_t DoublyLinkedList_newList(DoublyLinkedList_t **list) {
 #ifdef C_DATABASES_SAFE_MODE
@@ -38,9 +39,9 @@ status_t DoublyLinkedList_newList(DoublyLinkedList_t **list) {
         return ERR_BAD_ARGUMENT;
     }
 #endif  // C_DATABASES_SAFE_MODE
-    int idx = 10;
-    int arr[10] = {0};
-    printf("%d\n", arr[idx]);
+    int *arr = malloc(10 * sizeof(int));
+    free(arr);
+    printf("%d\n", arr[0]);
     DoublyLinkedList_t *newList = malloc(sizeof(*newList));
     if (!newList) {
         return ERR_MEM_ALLOC;
