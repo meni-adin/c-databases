@@ -1,9 +1,4 @@
 function(set_compiler_flags)
-    # Checks for C compiler ID but the settings apply to both C and C++
-    if(NOT (CMAKE_C_COMPILER_ID STREQUAL CMAKE_CXX_COMPILER_ID))
-        message(FATAL_ERROR "CMAKE_C_COMPILER_ID (${CMAKE_C_COMPILER_ID}) expected to be identical to CMAKE_CXX_COMPILER_ID (${CMAKE_CXX_COMPILER_ID})")
-    endif()
-
     if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
         if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
         endif()
@@ -70,13 +65,16 @@ function(set_target_cpp_compiler_flags target)
             /wd5027
             /wd5072
         )
-else()
+    else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
 endfunction()
 
 function(enable_sanitizers)
-    if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
+        add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address)
+    elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
         add_compile_options(/fsanitize=address)
         add_link_options(/fsanitize=address)
 
