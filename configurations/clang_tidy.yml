@@ -9,19 +9,21 @@ Checks: >-
   -google-*,
   -llvm*,
   -zircon-*,
+  -bugprone-multi-level-implicit-pointer-conversion,
+  -bugprone-suspicious-realloc-usage,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   -clang-diagnostic-c++98-compat,
   -clang-diagnostic-cast-qual,
   -clang-diagnostic-declaration-after-statement,
   -clang-diagnostic-error,
   -misc-non-private-member-variables-in-classes,
+  -modernize-macro-to-enum,
   -modernize-use-trailing-return-type,
   -modernize-use-using,
   -performance-enum-size,
   -readability-else-after-return,
   -readability-function-cognitive-complexity,
   -readability-isolate-declaration,
-HeaderFilterRegex: '.*'
 
 # Notes:
 # - Maybe bring back `readability-function-cognitive-complexity`.
