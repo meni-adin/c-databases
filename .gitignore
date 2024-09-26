@@ -13,3 +13,6 @@ __pycache__
 
 # local python-version for pyenv
 .python-version
+
+# temporary files
+_temp

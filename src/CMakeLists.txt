@@ -5,5 +5,5 @@ fetch_content_wrapper(
     GIT_TAG        origin/main
 )
 
+add_subdirectory(AVL_tree)
 add_subdirectory(doubly_linked_list)
-add_subdirectory(vector)
