@@ -1,6 +1,6 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef C_DATABASES_CONFIG_H
+#define C_DATABASES_CONFIG_H
 
 #cmakedefine C_DATABASES_SAFE_MODE
 
-#endif // CONFIG_H
+#endif // C_DATABASES_CONFIG_H
